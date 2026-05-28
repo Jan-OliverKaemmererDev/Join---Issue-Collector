@@ -1,7 +1,19 @@
 /**
  * Initialisiert die Login-Seite
  */
-function initLogin() {}
+function initLogin() {
+  // Can be left empty or removed.
+}
+
+/**
+ * Closes the welcome overlay
+ */
+function closeWelcomeOverlay() {
+  const overlay = document.getElementById("welcome-overlay");
+  if (overlay) {
+    overlay.classList.add("hidden");
+  }
+}
 
 /**
  * Verarbeitet den Login-Vorgang
