@@ -1,2 +1,3 @@
 .vscode/
 scripts/firebase-config.js
+n8n/join-issue-collector.json

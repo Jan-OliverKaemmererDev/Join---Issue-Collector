@@ -107,6 +107,22 @@
         <div class="board-columns">
           <div
             class="board-column"
+            id="column-triage"
+            ondrop="drop(event, 'triage')"
+            ondragover="
+              allowDrop(event);
+              highlight('triage-list');
+            "
+            ondragleave="removeHighlight('triage-list')"
+          >
+            <header class="column-header">
+              <span id="column-title-triage">Triage</span>
+            </header>
+            <div class="task-list" id="triage-list"></div>
+          </div>
+
+          <div
+            class="board-column"
             id="column-todo"
             ondrop="drop(event, 'todo')"
             ondragover="

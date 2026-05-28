@@ -88,6 +88,7 @@ function processTasksSnapshot(snapshot) {
  * Leert alle Board-Spalten
  */
 function clearAllColumns() {
+  document.getElementById("triage-list").innerHTML = "";
   document.getElementById("todo-list").innerHTML = "";
   document.getElementById("inprogress-list").innerHTML = "";
   document.getElementById("awaitfeedback-list").innerHTML = "";
@@ -102,7 +103,7 @@ function renderTasks() {
     return (a.position || 0) - (b.position || 0);
   });
   clearAllColumns();
-  let counts = { todo: 0, inprogress: 0, awaitfeedback: 0, done: 0 };
+  let counts = { triage: 0, todo: 0, inprogress: 0, awaitfeedback: 0, done: 0 };
   for (let i = 0; i < tasks.length; i++) {
     const task = tasks[i];
     renderTaskCard(task, counts);
@@ -130,6 +131,7 @@ function renderTaskCard(task, counts) {
  * @param {Object} counts - Die Zähl-Objekt mit Task-Anzahlen pro Status
  */
 function renderAllEmptyStates(counts) {
+  renderEmptyState("triage", counts.triage, "No tasks in Triage");
   renderEmptyState("todo", counts.todo, "No tasks To do");
   renderEmptyState("inprogress", counts.inprogress, "No tasks In progress");
   renderEmptyState(
