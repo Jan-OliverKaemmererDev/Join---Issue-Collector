@@ -408,6 +408,10 @@
 }
 
 /* --- Mobile Edit Overlay --- */
+.mobile-edit-overlay {
+  display: none;
+}
+
 @media (min-width: 320px) and (max-width: 780px) {
   .mobile-edit-overlay {
     display: none;
