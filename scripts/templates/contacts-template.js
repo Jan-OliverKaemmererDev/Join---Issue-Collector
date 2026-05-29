@@ -50,7 +50,7 @@ function getDesktopContactDetailsTemplate(contact) {
     <div class="contact-info-details">
         <div class="info-group">
             <span class="info-label">Email</span>
-            <a href="mailto:${contact.email}" class="contact-email-list">${contact.email}</a>
+            <a href="mailto:${contact.email}" target="_blank" class="contact-email-list">${contact.email}</a>
         </div>
         <div class="info-group">
             <span class="info-label">Phone</span>
@@ -83,7 +83,7 @@ function getMobileContactDetailsTemplate(contact) {
     </div>
 
     <div class="info-label">Email</div>
-    <a href="mailto:${contact.email}" class="info-value-email">${contact.email}</a>
+    <a href="mailto:${contact.email}" target="_blank" class="info-value-email">${contact.email}</a>
 
     <div class="info-label">Phone</div>
     <div class="info-value">${contact.phone}</div>
