@@ -88,6 +88,10 @@ function displayTaskMetrics(metrics) {
   document.getElementById("count-board").textContent = metrics.board;
   document.getElementById("count-progress").textContent = metrics.progress;
   document.getElementById("count-awaiting").textContent = metrics.awaiting;
+  const emailsElement = document.getElementById("count-emails");
+  if (emailsElement) {
+    emailsElement.textContent = metrics.emails || 0;
+  }
   const deadlineElement = document.getElementById("next-deadline");
   if (metrics.nextDeadline) {
     deadlineElement.textContent = metrics.nextDeadline;
@@ -161,6 +165,7 @@ function createInitialMetrics() {
     board: 0,
     progress: 0,
     awaiting: 0,
+    emails: 0,
     nextDeadline: null,
   };
 }
@@ -183,6 +188,11 @@ function processTaskStatus(task, metrics) {
       break;
     case "awaitfeedback":
       metrics.awaiting++;
+      break;
+    case "triage":
+      if (task.creatorType === "extern" || task.creatorEmail || task.creator) {
+        metrics.emails++;
+      }
       break;
   }
 }
@@ -251,6 +261,7 @@ function renderTaskMetrics() {
     "count-board": "0",
     "count-progress": "0",
     "count-awaiting": "0",
+    "count-emails": "0",
     "next-deadline": "No upcoming deadline",
   };
   for (const [id, value] of Object.entries(elements)) {
