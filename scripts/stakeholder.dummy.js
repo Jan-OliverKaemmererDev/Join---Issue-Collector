@@ -1,5 +1,5 @@
 const DAILY_LIMIT = 10;
-const AUTH_TOKEN = "bzPxn205hx4KjfPhzCGRO2N3bts8paRH5NqTX9lH";
+const AUTH_TOKEN = "YOUR_FIREBASE_AUTH_TOKEN";
 let currentCount = 0;
 
 /**
