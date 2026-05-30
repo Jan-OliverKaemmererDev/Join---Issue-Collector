@@ -3,3 +3,4 @@ scripts/firebase-config.js
 n8n/join-issue-collector.json
 scripts/stakeholder.js
 scripts/board.js
+scripts/addtask.js
