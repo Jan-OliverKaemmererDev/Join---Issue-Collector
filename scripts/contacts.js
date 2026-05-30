@@ -7,6 +7,15 @@ function initContacts() {
     initSideMenu("contacts");
     await loadContactsFromFirestore();
     renderContactList();
+
+    const selectedEmail = sessionStorage.getItem('selectedContactEmail');
+    if (selectedEmail) {
+      const contactToSelect = contacts.find(function(c) { return c.email === selectedEmail; });
+      if (contactToSelect) {
+        showContactDetails(contactToSelect.id);
+      }
+      sessionStorage.removeItem('selectedContactEmail');
+    }
   })();
 }
 

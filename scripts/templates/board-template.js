@@ -111,15 +111,68 @@ function getTaskDetailsTemplate(
   categoryLabel,
   assignedToHtml,
 ) {
+  let aiIndicator = "";
+  if (task.createdBy === "extern") {
+    aiIndicator = `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <img src="./assets/icons/issue-collector/wand.svg" alt="AI">
+        <span style="background: linear-gradient(to right, #9327FF, #2EA1DC); -webkit-background-clip: text; color: transparent; font-size: 16px;">Ai-generated ticket</span>
+      </div>
+    `;
+  }
+
+  let creatorSection = "";
+  if (task.createdBy === "extern") {
+    creatorSection = `
+      <div class="task-details-info" style="align-items: center; margin-top: 16px;">
+        <span class="task-details-label">Creator:</span>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <div style="background-color: #E2FE59; padding: 4px 8px; border-radius: 8px; display: flex; align-items: center; gap: 4px; font-size: 14px; color: #2A3647;">
+            <img src="./assets/icons/issue-collector/globe.svg" alt="Extern">
+            Extern
+          </div>
+          <span style="font-size: 16px; color: #000;">${task.creatorName || "Externer Benutzer"}</span>
+          <a href="mailto:${task.creatorEmail || ''}" target="_blank" style="display: flex; align-items: center; gap: 4px; text-decoration: none; color: #2A3647; font-size: 14px; margin-left: 8px;">
+            <img src="./assets/icons/issue-collector/email.svg" alt="Email">
+            E-mail
+          </a>
+        </div>
+      </div>
+    `;
+  } else if (task.creatorType === "internal-user" || (task.createdBy && task.createdBy !== "extern")) {
+    const name = task.creatorName || "Member";
+    const email = task.creatorEmail || "";
+    creatorSection = `
+      <div class="task-details-info" style="align-items: center; margin-top: 16px;">
+        <span class="task-details-label">Creator:</span>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <div style="background-color: #93E9BE; padding: 4px 8px; border-radius: 8px; display: flex; align-items: center; gap: 4px; font-size: 14px; color: #2A3647;">
+            <img src="./assets/icons/issue-collector/member.svg" alt="Member">
+            Member
+          </div>
+          <span style="font-size: 16px; color: #000;">${name}</span>
+          <a href="contacts.html" onclick="sessionStorage.setItem('selectedContactEmail', '${email}')" style="display: flex; align-items: center; gap: 4px; text-decoration: none; color: #2A3647; font-size: 14px; margin-left: 8px;">
+            <img src="./assets/icons/issue-collector/profile.svg" alt="Profil">
+            Profil
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
   return `
     <div class="task-details-header">
-      <div class="category-tag ${categoryClass}">${categoryLabel}</div>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div class="category-tag ${categoryClass}">${categoryLabel}</div>
+        ${aiIndicator}
+      </div>
       <button class="task-details-close" onclick="closeTaskDetails()">
         <img src="./assets/icons/clear-X-icon.svg" alt="Close">
       </button>
     </div>
     <h1 class="task-details-title">${task.title}</h1>
     <p class="task-description task-description-full">${task.description}</p>
+    ${creatorSection}
     <div class="task-details-info">
       <span class="task-details-label">Due date:</span>
       <span>${task.dueDate}</span>
