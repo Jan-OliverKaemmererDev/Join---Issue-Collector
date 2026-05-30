@@ -103,7 +103,7 @@
     },
     {
       "parameters": {
-        "jsCode": "let rawText = $input.all()[0].json.text;\nlet cleanText = rawText.replace(/```json/gi, '').replace(/```/gi, '').trim();\nconst aiOutput = JSON.parse(cleanText);\n\nconst emailSender = $('Email Trigger (IMAP)').first().json.from.address;\n\nreturn {\n  title: aiOutput.title,\n  category: aiOutput.category,\n  priority: aiOutput.priority,\n  deadline: aiOutput.deadline,\n  description: aiOutput.description,\n  creator: emailSender,\n  creatorType: \"extern\",\n  column: \"Triage\"\n};"
+        "jsCode": "let rawText = $input.all()[0].json.text;\nlet cleanText = rawText.replace(/```json/gi, '').replace(/```/gi, '').trim();\nconst aiOutput = JSON.parse(cleanText);\n\nconst emailSender = $('Email Trigger (IMAP)').first().json.from.address;\n\nreturn {\n  title: aiOutput.title,\n  category: aiOutput.category,\n  priority: aiOutput.priority,\n  deadline: aiOutput.deadline,\n  description: aiOutput.description,\n  creator: emailSender,\n  creatorType: \"extern\",\n  status: \"triage\"\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -159,8 +159,8 @@
               "value": "={{ $json.creatorType }}"
             },
             {
-              "name": "column",
-              "value": "={{ $json.column }}"
+              "name": "status",
+              "value": "={{ $json.status }}"
             }
           ]
         },

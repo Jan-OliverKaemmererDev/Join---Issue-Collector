@@ -101,7 +101,7 @@ function createTaskObject(currentUser, assignedToIds, formData) {
     priority: selectedPriority,
     assignedTo: assignedToIds,
     subtasks: copySubtasks(),
-    status: "todo",
+    status: "triage",
     position: Date.now(),
     createdAt: new Date().toISOString(),
     createdBy: currentUser.id,
@@ -340,7 +340,7 @@ async function getOriginalTaskStatus(taskRef) {
   if (oldTaskSnap.exists()) {
     return oldTaskSnap.data().status;
   }
-  return "todo";
+  return "triage";
 }
 
 /**
