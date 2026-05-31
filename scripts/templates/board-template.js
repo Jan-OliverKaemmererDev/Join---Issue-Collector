@@ -16,8 +16,16 @@ function getTaskCardTemplate(
   assigneesHtml,
   priorityIcon,
 ) {
+  let sourceIcon = "";
+  if (task.createdBy === "extern") {
+    sourceIcon = `<img src="./assets/icons/issue-collector/wand.svg" class="task-source-icon" alt="Extern">`;
+  } else if (task.creatorType === "internal-user" || (task.createdBy && task.createdBy !== "extern")) {
+    sourceIcon = `<img src="./assets/icons/issue-collector/profile.svg" class="task-source-icon" alt="User">`;
+  }
+
   return `
     <div class="task-card" draggable="true" data-task-id="${task.id}" ondragstart="startDragging(${task.id}, event)" ondragend="endDragging()" onclick="openTaskDetails(${task.id})">
+      ${sourceIcon}
       <div class="category-tag ${categoryClass}">${categoryLabel}</div>
       <h3 class="task-title">${task.title}</h3>
       <p class="task-description">${task.description}</p>
@@ -124,16 +132,16 @@ function getTaskDetailsTemplate(
   let creatorSection = "";
   if (task.createdBy === "extern") {
     creatorSection = `
-      <div class="task-details-info" style="align-items: center; margin-top: 16px;">
+      <div class="task-details-info task-creator-section">
         <span class="task-details-label">Creator:</span>
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-          <div style="background-color: #E2FE59; padding: 4px 8px; border-radius: 8px; display: flex; align-items: center; gap: 4px; font-size: 14px; color: #2A3647;">
+        <div class="task-creator-info">
+          <div class="creator-badge creator-badge-extern">
             <img src="./assets/icons/issue-collector/globe.svg" alt="Extern">
             Extern
           </div>
-          <span style="font-size: 16px; color: #000;">${task.creatorName || "Externer Benutzer"}</span>
-          <a href="mailto:${task.creatorEmail || ''}" target="_blank" style="display: flex; align-items: center; gap: 4px; text-decoration: none; color: #2A3647; font-size: 14px; margin-left: 8px;">
-            <img src="./assets/icons/issue-collector/email.svg" alt="Email">
+          <span class="creator-name">${task.creatorName || "Externer Benutzer"}</span>
+          <a href="mailto:${task.creatorEmail || ''}" target="_blank" class="creator-contact-link">
+            <img src="./assets/icons/issue-collector/email.svg" class="creator-contact-icon-email" alt="Email">
             E-mail
           </a>
         </div>
@@ -143,16 +151,16 @@ function getTaskDetailsTemplate(
     const name = task.creatorName || "Member";
     const email = task.creatorEmail || "";
     creatorSection = `
-      <div class="task-details-info" style="align-items: center; margin-top: 16px;">
+      <div class="task-details-info task-creator-section">
         <span class="task-details-label">Creator:</span>
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-          <div style="background-color: #93E9BE; padding: 4px 8px; border-radius: 8px; display: flex; align-items: center; gap: 4px; font-size: 14px; color: #2A3647;">
+        <div class="task-creator-info">
+          <div class="creator-badge creator-badge-member">
             <img src="./assets/icons/issue-collector/member.svg" alt="Member">
             Member
           </div>
-          <span style="font-size: 16px; color: #000;">${name}</span>
-          <a href="contacts.html" onclick="sessionStorage.setItem('selectedContactEmail', '${email}')" style="display: flex; align-items: center; gap: 4px; text-decoration: none; color: #2A3647; font-size: 14px; margin-left: 8px;">
-            <img src="./assets/icons/issue-collector/profile.svg" alt="Profil">
+          <span class="creator-name">${name}</span>
+          <a href="contacts.html" onclick="sessionStorage.setItem('selectedContactEmail', '${email}')" class="creator-contact-link">
+            <img src="./assets/icons/issue-collector/profile.svg" class="creator-contact-icon-profile" alt="Profil">
             Profil
           </a>
         </div>

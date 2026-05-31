@@ -10,6 +10,15 @@
   transition: all 0.1s ease-in-out;
   user-select: none;
   -webkit-user-select: none;
+  position: relative;
+}
+
+.task-source-icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 16px;
+  height: 16px;
 }
 
 .task-card:hover {

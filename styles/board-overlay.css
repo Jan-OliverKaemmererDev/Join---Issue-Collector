@@ -298,3 +298,63 @@
   background-color: #d1d1d1;
   margin: 0 4px;
 }
+
+.task-creator-section {
+  align-items: center;
+  margin-top: 16px;
+}
+
+.task-creator-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.creator-badge {
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #2a3647;
+}
+
+.creator-badge-extern {
+  background-color: #e2fe59;
+}
+
+.creator-badge-member {
+  background-color: #93e9be;
+}
+
+.creator-name {
+  font-size: 16px;
+  color: #000;
+}
+
+.creator-contact-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #2a3647;
+  font-size: 14px;
+  margin-left: 8px;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.creator-contact-link:hover {
+  color: white;
+  background-color: #2a3647;
+}
+
+.creator-contact-link:active .creator-contact-icon-email {
+  content: url("../assets/icons/issue-collector/email-white.svg");
+}
+
+.creator-contact-link:active .creator-contact-icon-profile {
+  content: url("../assets/icons/issue-collector/profile-white.svg");
+}
