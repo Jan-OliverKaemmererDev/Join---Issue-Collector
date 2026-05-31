@@ -227,10 +227,10 @@
     },
     {
       "parameters": {
-        "fromEmail": "deine-email@beispiel.de",
-        "toEmail": "={{ $('Email Trigger (IMAP)').item.json.from.address }}",
-        "subject": "={{ 'Ticket erfolgreich erstellt: ' + $('Format Ticket Data').item.json.title }}",
-        "text": "={{ 'Hallo,\\n\\ndein Anliegen wurde erfolgreich als Ticket in unserem Join Kanban-Board angelegt.\\n\\nTitel: ' + $('Format Ticket Data').item.json.title + '\\nKategorie: ' + $('Format Ticket Data').item.json.category + '\\n\\nViele Grüße,\\nDein Join-Team' }}",
+        "fromEmail": "jowieja22@gmail.com",
+        "toEmail": "={{ $('Format Ticket Data').first().json.creator || 'jowieja22@gmail.com' }}",
+        "subject": "={{ 'Ticket erfolgreich erstellt: ' + ($('Format Ticket Data').first().json.title || 'Unbekannt') }}",
+        "text": "={{ 'Hallo,\\n\\ndein Anliegen wurde erfolgreich als Ticket in unserem Join Kanban-Board angelegt.\\n\\nTitel: ' + ($('Format Ticket Data').first().json.title || 'Unbekannt') + '\\nKategorie: ' + ($('Format Ticket Data').first().json.category || 'Unbekannt') + '\\n\\nViele Grüße,\\nDein Join-Team' }}",
         "options": {}
       },
       "type": "n8n-nodes-base.emailSend",
