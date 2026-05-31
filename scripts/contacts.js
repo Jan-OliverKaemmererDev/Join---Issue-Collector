@@ -1,5 +1,8 @@
 let contacts = [];
 
+/**
+ * Initialisiert die Kontaktseite, lädt Daten und wählt ggf. einen Kontakt aus
+ */
 function initContacts() {
   return (async function () {
     checkUser();
@@ -19,6 +22,9 @@ function initContacts() {
   })();
 }
 
+/**
+ * Lädt die Kontakte aus Firestore
+ */
 function loadContactsFromFirestore() {
   return (async function () {
     const currentUser = getCurrentUser();
@@ -27,6 +33,10 @@ function loadContactsFromFirestore() {
   })();
 }
 
+/**
+ * Befüllt das lokale Kontakte-Array aus einem Firestore-Snapshot
+ * @param {Object} snapshot - Der Firestore Snapshot
+ */
 function populateContactsFromSnapshot(snapshot) {
   contacts = [];
   snapshot.forEach(function (doc) {
@@ -36,12 +46,20 @@ function populateContactsFromSnapshot(snapshot) {
   });
 }
 
+/**
+ * Sortiert die Kontakte alphabetisch nach Namen
+ */
 function sortContacts() {
   contacts.sort(function (a, b) {
     return a.name.localeCompare(b.name);
   });
 }
 
+/**
+ * Generiert die Initialen aus dem Namen
+ * @param {string} name - Der vollständige Name
+ * @returns {string} Die Initialen
+ */
 function getInitials(name) {
   const parts = name.split(" ");
   const initials = parts
@@ -52,6 +70,9 @@ function getInitials(name) {
   return initials.toUpperCase();
 }
 
+/**
+ * Rendert die Kontaktliste
+ */
 function renderContactList() {
   const list = document.getElementById("contacts-list");
   if (!list) return;
@@ -75,6 +96,11 @@ function addLetterGroupIfNeeded(list, contact) {
   }
 }
 
+/**
+ * Fügt einen einzelnen Kontakt zur Liste hinzu
+ * @param {HTMLElement} list - Das Listen-Element
+ * @param {Object} contact - Das Kontakt-Objekt
+ */
 function appendContactItemToList(list, contact) {
   addLetterGroupIfNeeded(list, contact);
   list.innerHTML += getContactItemTemplate(contact);
@@ -82,19 +108,37 @@ function appendContactItemToList(list, contact) {
 
 let lastRenderedLetter = "";
 
+/**
+ * Gibt den zuletzt gerenderten Buchstaben zurück
+ * @returns {string} Der Buchstabe
+ */
 function getLastRenderedLetter() {
   return lastRenderedLetter;
 }
 
+/**
+ * Aktualisiert den zuletzt gerenderten Buchstaben
+ * @param {string} letter - Der Buchstabe
+ */
 function updateLastRenderedLetter(letter) {
   lastRenderedLetter = letter;
 }
 
+/**
+ * Fügt einen Buchstaben-Trenner zur Liste hinzu
+ * @param {HTMLElement} list - Das Listen-Element
+ * @param {string} letter - Der Buchstabe
+ */
 function addLetterGroupToList(list, letter) {
   list.innerHTML +=
     getContactGroupLetterTemplate(letter) + getSeparatorLineTemplate();
 }
 
+/**
+ * Findet einen Kontakt anhand seiner ID
+ * @param {string|number} id - Die Kontakt-ID
+ * @returns {Object|null} Der Kontakt oder null
+ */
 function findContactById(id) {
   const found = contacts.find(function (c) {
     return String(c.id) === String(id);
@@ -102,6 +146,10 @@ function findContactById(id) {
   return found || null;
 }
 
+/**
+ * Zeigt die Details eines Kontakts an
+ * @param {string|number} id - Die Kontakt-ID
+ */
 function showContactDetails(id) {
   const contact = findContactById(id);
   if (!contact) return;
@@ -110,6 +158,11 @@ function showContactDetails(id) {
   applyContactDetailsVisibility(id);
 }
 
+/**
+ * Rendert die Detailansicht eines Kontakts abhängig von der Bildschirmgröße
+ * @param {Object} contact - Der Kontakt
+ * @param {string|number} id - Die Kontakt-ID
+ */
 function renderContactDetailsView(contact, id) {
   const content = document.getElementById("contact-details-content");
   if (window.innerWidth > 780) {
@@ -119,6 +172,10 @@ function renderContactDetailsView(contact, id) {
   }
 }
 
+/**
+ * Markiert einen Kontakt in der Liste als aktiv
+ * @param {string|number} id - Die Kontakt-ID
+ */
 function markActiveContact(id) {
   const items = document.querySelectorAll(".contact-item");
   items.forEach(function (item) {
@@ -127,6 +184,10 @@ function markActiveContact(id) {
   });
 }
 
+/**
+ * Wendet Sichtbarkeitsklassen für die Detailansicht an
+ * @param {string|number} id - Die Kontakt-ID
+ */
 function applyContactDetailsVisibility(id) {
   if (window.innerWidth <= 780) {
     applyMobileContactDetailsVisibility();
@@ -135,11 +196,17 @@ function applyContactDetailsVisibility(id) {
   }
 }
 
+/**
+ * Wendet Sichtbarkeitsklassen für die mobile Detailansicht an
+ */
 function applyMobileContactDetailsVisibility() {
   const container = document.querySelector(".contact-details-container");
   container.classList.add("show-mobile");
 }
 
+/**
+ * Wendet Sichtbarkeitsklassen für die Desktop-Detailansicht an
+ */
 function applyDesktopContactDetailsVisibility() {
   const container = document.getElementById("contact-details-view");
   container.classList.add("visible");
@@ -186,6 +253,9 @@ function closeContactDetails() {
   deactivateContactItems();
 }
 
+/**
+ * Prüft den Benutzer und aktualisiert ggf. Initialen im Header
+ */
 function checkUser() {
   if (typeof getCurrentUser === "function") {
     const user = getCurrentUser();
@@ -197,6 +267,10 @@ function checkUser() {
   }
 }
 
+/**
+ * Schaltet das Kontakt-Menü auf Mobilgeräten um
+ * @param {Event} e - Das Klick-Event
+ */
 function toggleContactMenu(e) {
   e.stopPropagation();
   const menu = document.getElementById("contact-menu-box");

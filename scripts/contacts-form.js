@@ -9,6 +9,9 @@ function activateContactOverlay(html) {
   document.body.style.overflow = "hidden";
 }
 
+/**
+ * Öffnet den Dialog zum Hinzufügen eines Kontakts
+ */
 function openAddContactDialog() {
   activateContactOverlay(getAddContactDialogTemplate());
   checkContactFormValidity(
@@ -19,6 +22,10 @@ function openAddContactDialog() {
   );
 }
 
+/**
+ * Öffnet den Dialog zum Bearbeiten eines Kontakts
+ * @param {string|number} id - Die Kontakt-ID
+ */
 function openEditContactDialog(id) {
   activateContactOverlay(getEditContactDialogTemplate(findContactById(id)));
   checkContactFormValidity(
@@ -29,6 +36,9 @@ function openEditContactDialog(id) {
   );
 }
 
+/**
+ * Schließt den Kontakt-Dialog
+ */
 function closeAddContactDialog() {
   const overlay = document.getElementById("add-contact-overlay");
   overlay.classList.remove("active");
@@ -102,6 +112,11 @@ function validateContactForm(nameId, emailId, phoneId) {
   return nameValid && emailValid && phoneValid;
 }
 
+/**
+ * Zeigt einen Fehlerhinweis für ein Feld an
+ * @param {string} inputId - Die ID des Eingabefelds
+ * @param {string} message - Die Fehlermeldung
+ */
 function showFieldError(inputId, message) {
   const input = document.getElementById(inputId);
   const group = input.closest(".input-group");
@@ -115,6 +130,10 @@ function showFieldError(inputId, message) {
   errorEl.textContent = message;
 }
 
+/**
+ * Entfernt den Fehlerhinweis eines Felds
+ * @param {string} inputId - Die ID des Eingabefelds
+ */
 function clearFieldError(inputId) {
   const input = document.getElementById(inputId);
   const group = input.closest(".input-group");
@@ -125,6 +144,13 @@ function clearFieldError(inputId) {
   }
 }
 
+/**
+ * Überprüft die Validität des gesamten Kontaktformulars und aktualisiert den Button-Status
+ * @param {string} nameId - ID des Namensfeldes
+ * @param {string} emailId - ID des E-Mail-Feldes
+ * @param {string} phoneId - ID des Telefonfeldes
+ * @param {string} buttonId - ID des Buttons
+ */
 function checkContactFormValidity(nameId, emailId, phoneId, buttonId) {
   const name = document.getElementById(nameId).value.trim();
   const email = document.getElementById(emailId).value.trim();
@@ -156,6 +182,13 @@ function checkContactFormValidity(nameId, emailId, phoneId, buttonId) {
   btn.classList.toggle("btn-disabled", !allValid);
 }
 
+/**
+ * Aktualisiert das visuelle Feedback für ein Eingabefeld
+ * @param {string} inputId - ID des Eingabefeldes
+ * @param {string} value - Der aktuelle Wert
+ * @param {boolean} isValid - Ob der Wert gültig ist
+ * @param {string} errorMessage - Die anzuzeigende Fehlermeldung
+ */
 function updateContactFieldFeedback(inputId, value, isValid, errorMessage) {
   if (value.length > 0) {
     if (isValid) {
@@ -168,6 +201,10 @@ function updateContactFieldFeedback(inputId, value, isValid, errorMessage) {
   }
 }
 
+/**
+ * Erstellt einen neuen Kontakt aus dem Formular
+ * @param {Event} e - Das Submit-Event
+ */
 function createContact(e) {
   e.preventDefault();
   const currentUser = getCurrentUser();
@@ -178,6 +215,11 @@ function createContact(e) {
   saveNewContactToFirestore(currentUser, buildNewContactObject(name));
 }
 
+/**
+ * Baut das Objekt für einen neuen Kontakt
+ * @param {string} name - Der Name des Kontakts
+ * @returns {Object} Das Kontakt-Objekt
+ */
 function buildNewContactObject(name) {
   const colors = ["#AB47BC", "#FF9800", "#5C6BC0", "#26A69A"];
   const randomColor = colors[Math.floor(Math.random() * 4)];
@@ -191,6 +233,10 @@ function buildNewContactObject(name) {
   };
 }
 
+/**
+ * Schließt die Erstellung ab und aktualisiert die UI
+ * @param {Object} newContact - Der neue Kontakt
+ */
 function finalizeContactCreation(newContact) {
   contacts.push(newContact);
   renderContactList();
@@ -198,6 +244,11 @@ function finalizeContactCreation(newContact) {
   showSuccessAlert();
 }
 
+/**
+ * Speichert Änderungen an einem bestehenden Kontakt
+ * @param {Event} e - Das Submit-Event
+ * @param {string|number} id - Die ID des Kontakts
+ */
 function saveContact(e, id) {
   e.preventDefault();
   const currentUser = getCurrentUser();
@@ -210,6 +261,10 @@ function saveContact(e, id) {
   persistContactToFirestore(currentUser, contact, id);
 }
 
+/**
+ * Aktualisiert die Daten eines Kontakts basierend auf Formulareingaben
+ * @param {Object} contact - Das Kontakt-Objekt
+ */
 function updateContactFromForm(contact) {
   contact.name = document.getElementById("edit-contact-name").value;
   contact.email = document.getElementById("edit-contact-email").value;
@@ -217,6 +272,10 @@ function updateContactFromForm(contact) {
   contact.initials = getInitials(contact.name);
 }
 
+/**
+ * Schließt das Update ab und aktualisiert die UI
+ * @param {Object} contact - Der aktualisierte Kontakt
+ */
 function finalizeContactUpdate(contact) {
   renderContactList();
   const content = document.getElementById("contact-details-content");
@@ -224,18 +283,30 @@ function finalizeContactUpdate(contact) {
   closeAddContactDialog();
 }
 
+/**
+ * Löscht einen Kontakt
+ * @param {string|number} id - Die ID des zu löschenden Kontakts
+ */
 function deleteContact(id) {
   const currentUser = getCurrentUser();
   if (!currentUser) return;
   removeContactFromFirestore(currentUser, id);
 }
 
+/**
+ * Schließt die Löschung in der UI ab
+ * @param {string|number} id - Die Kontakt-ID
+ */
 function finalizeContactDeletion(id) {
   removeContactFromLocal(id);
   renderContactList();
   closeContactDetails();
 }
 
+/**
+ * Entfernt einen Kontakt aus dem lokalen Array
+ * @param {string|number} id - Die Kontakt-ID
+ */
 function removeContactFromLocal(id) {
   contacts = contacts.filter(function (c) {
     return String(c.id) !== String(id);
