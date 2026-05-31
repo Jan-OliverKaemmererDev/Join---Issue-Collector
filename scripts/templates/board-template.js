@@ -139,11 +139,13 @@ function getTaskDetailsTemplate(
             <img src="./assets/icons/issue-collector/globe.svg" alt="Extern">
             Extern
           </div>
-          <span class="creator-name">${task.creatorName || "Externer Benutzer"}</span>
-          <a href="mailto:${task.creatorEmail || ''}" target="_blank" class="creator-contact-link">
-            <img src="./assets/icons/issue-collector/email.svg" class="creator-contact-icon-email" alt="Email">
-            E-mail
-          </a>
+          <div class="creator-person-info">
+            <span class="creator-name">${task.creatorName || "Externer Benutzer"}</span>
+            <a href="mailto:${task.creatorEmail || ''}" target="_blank" class="creator-contact-link">
+              <img src="./assets/icons/issue-collector/email.svg" class="creator-contact-icon-email" alt="Email">
+              E-mail
+            </a>
+          </div>
         </div>
       </div>
     `;
@@ -158,11 +160,13 @@ function getTaskDetailsTemplate(
             <img src="./assets/icons/issue-collector/member.svg" alt="Member">
             Member
           </div>
-          <span class="creator-name">${name}</span>
-          <a href="contacts.html" onclick="sessionStorage.setItem('selectedContactEmail', '${email}')" class="creator-contact-link">
-            <img src="./assets/icons/issue-collector/profile.svg" class="creator-contact-icon-profile" alt="Profil">
-            Profil
-          </a>
+          <div class="creator-person-info">
+            <span class="creator-name">${name}</span>
+            <a href="contacts.html" onclick="sessionStorage.setItem('selectedContactEmail', '${email}')" class="creator-contact-link">
+              <img src="./assets/icons/issue-collector/profile.svg" class="creator-contact-icon-profile" alt="Profil">
+              Profil
+            </a>
+          </div>
         </div>
       </div>
     `;

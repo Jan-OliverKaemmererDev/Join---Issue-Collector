@@ -295,11 +295,11 @@
 
   /* Urgent */
   .card-large {
-    grid-column: span 6 !important;
+    grid-column: span 4 !important;
     flex-direction: row !important;
     gap: 0 !important;
-    padding: 0 24px !important;
-    justify-content: flex-start !important;
+    padding: 0 12px !important;
+    justify-content: center !important;
   }
 
   .urgent-info {
@@ -311,18 +311,25 @@
 
   .urgent-info .icon-badge {
     background-color: #ff3d00 !important;
+    width: 40px !important;
+    height: 40px !important;
   }
+  .urgent-info .icon-badge img {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
   .urgent-info b {
-    font-size: 36px !important;
+    font-size: 32px !important;
   }
   .urgent-info p {
-    font-size: 15px !important;
+    font-size: 13px !important;
   }
 
   .deadline-info {
     border-left: 2px solid #d1d1d1;
-    padding-left: 20px !important;
-    margin-left: 20px;
+    padding-left: 12px !important;
+    margin-left: 12px;
     text-align: left;
     height: auto !important;
     display: flex;
@@ -331,12 +338,12 @@
   }
 
   .deadline-info b {
-    font-size: 16px !important;
+    font-size: 14px !important;
     font-weight: 700;
     display: block;
   }
   .deadline-info p {
-    font-size: 14px !important;
+    font-size: 12px !important;
     margin: 4px 0 0;
     color: #2a3647;
   }
