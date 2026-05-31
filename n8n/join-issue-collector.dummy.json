@@ -69,7 +69,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Du bist ein technischer Projektmanager für das Kanban-Board \"Join\". Analysiere den E-Mail-Text und extrahiere die Daten in JSON.\n\nE-Mail Betreff: {{ $('Email Trigger (IMAP)').item.json.subject }}\nE-Mail Text: {{ $('Email Trigger (IMAP)').item.json.text }}\n\nGib exakt dieses JSON-Format zurück:\n{\n  \"title\": \"Prägnanter Titel\",\n  \"category\": \"technischer Task, User Story/Feature, oder Bug Request\",\n  \"priority\": \"urgent, medium, oder low\",\n  \"deadline\": \"Deadline falls vorhanden, sonst null\",\n  \"description\": \"Fasse das Anliegen zusammen. Füge am Ende hinzu: 'Dieses Ticket wurde KI-generiert'\"\n}\n\nGib NUR das JSON aus.",
+        "text": "=Du bist ein technischer Projektmanager für das Kanban-Board \"Join\". Analysiere den E-Mail-Text und extrahiere die Daten in JSON.\n\nWICHTIG: Prüfe zuerst, ob das Anliegen relevant für das Projekt \"Join\" oder ein IT-spezifisches To-Do ist. Ignoriere Spam, Blödsinn oder völlig irrelevante Themen.\n\nE-Mail Betreff: {{ $('Email Trigger (IMAP)').item.json.subject }}\nE-Mail Text: {{ $('Email Trigger (IMAP)').item.json.text }}\n\nGib exakt dieses JSON-Format zurück:\n{\n  \"isRelevant\": \"true oder false (false bei Spam, Blödsinn oder irrelevanten Themen)\",\n  \"title\": \"Prägnanter Titel\",\n  \"category\": \"technischer Task, User Story/Feature, oder Bug Request\",\n  \"priority\": \"urgent, medium, oder low\",\n  \"deadline\": \"Deadline falls vorhanden, sonst null\",\n  \"description\": \"Fasse das Anliegen zusammen. Füge am Ende hinzu: 'Dieses Ticket wurde KI-generiert'\"\n}\n\nGib NUR das JSON aus.",
         "hasOutputParser": true
       },
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
@@ -103,7 +103,7 @@
     },
     {
       "parameters": {
-        "jsCode": "let rawText = $input.all()[0].json.text;\nlet cleanText = rawText.replace(/```json/gi, '').replace(/```/gi, '').trim();\nconst aiOutput = JSON.parse(cleanText);\n\nconst emailSender = $('Email Trigger (IMAP)').first().json.from.address;\n\nreturn {\n  title: aiOutput.title,\n  category: aiOutput.category,\n  priority: aiOutput.priority,\n  deadline: aiOutput.deadline,\n  description: aiOutput.description,\n  creator: emailSender,\n  creatorType: \"extern\",\n  status: \"triage\"\n};"
+        "jsCode": "let rawText = $input.all()[0].json.text;\nlet cleanText = rawText.replace(/```json/gi, '').replace(/```/gi, '').trim();\nconst aiOutput = JSON.parse(cleanText);\n\nif (aiOutput.isRelevant === false || aiOutput.isRelevant === \"false\") {\n  return [];\n}\n\nconst emailSender = $('Email Trigger (IMAP)').first().json.from.address;\n\nreturn {\n  title: aiOutput.title,\n  category: aiOutput.category,\n  priority: aiOutput.priority,\n  deadline: aiOutput.deadline,\n  description: aiOutput.description,\n  creator: emailSender,\n  creatorType: \"extern\",\n  status: \"triage\"\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -203,15 +203,50 @@
       "name": "Firebase: Counter +1"
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
+      "parameters": {
+        "fromEmail": "deine-email@beispiel.de",
+        "toEmail": "={{ $('Email Trigger (IMAP)').item.json.from.address }}",
+        "subject": "Tageslimit erreicht - Ticket nicht erstellt",
+        "text": "Leider haben wir für heute das Limit für neue automatische Tickets erreicht. Dein Anliegen konnte daher nicht in das Join Kanban-Board übernommen werden. Bitte versuche es morgen noch einmal!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
       "position": [
         96,
         240
       ],
       "id": "ddac1839-3a44-46ce-a1fc-e0b8dafcf3af",
-      "name": "Limit Reached (Send Email)"
+      "name": "Limit Reached (Send Email)",
+      "credentials": {
+        "smtp": {
+          "id": "",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "deine-email@beispiel.de",
+        "toEmail": "={{ $('Email Trigger (IMAP)').item.json.from.address }}",
+        "subject": "={{ 'Ticket erfolgreich erstellt: ' + $('Format Ticket Data').item.json.title }}",
+        "text": "={{ 'Hallo,\\n\\ndein Anliegen wurde erfolgreich als Ticket in unserem Join Kanban-Board angelegt.\\n\\nTitel: ' + $('Format Ticket Data').item.json.title + '\\nKategorie: ' + $('Format Ticket Data').item.json.category + '\\n\\nViele Grüße,\\nDein Join-Team' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        1056,
+        -80
+      ],
+      "id": "ticket-created-email-node-123",
+      "name": "Ticket Created (Send Email)",
+      "credentials": {
+        "smtp": {
+          "id": "",
+          "name": "SMTP account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -294,6 +329,17 @@
         [
           {
             "node": "Firebase: Counter +1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firebase: Counter +1": {
+      "main": [
+        [
+          {
+            "node": "Ticket Created (Send Email)",
             "type": "main",
             "index": 0
           }

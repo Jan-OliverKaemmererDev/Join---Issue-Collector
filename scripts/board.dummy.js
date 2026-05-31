@@ -276,6 +276,7 @@ async function moveTo(status, targetTaskId = null, relativePos = "after") {
   const taskIndex = findTaskById(currentDraggedTaskId);
   if (taskIndex !== -1) {
     const task = tasks[taskIndex];
+    const oldStatus = task.status;
     task.status = status;
     if (targetTaskId !== null && targetTaskId !== currentDraggedTaskId) {
       task.position = calculateNewPosition(status, targetTaskId, relativePos);
@@ -284,8 +285,35 @@ async function moveTo(status, targetTaskId = null, relativePos = "after") {
     }
     renderTasks();
     await saveSingleTask(task);
+
+    // dummy implementation uses createdBy as email when from firebase
+    if (oldStatus !== status && task.createdBy && task.createdBy !== "extern") {
+      notifyExternalCreatorOnStatusChange(task, oldStatus, status);
+    }
   }
   currentDraggedTaskId = null;
+}
+
+/**
+ * Notifies an external creator via n8n Webhook when their task changes status
+ */
+function notifyExternalCreatorOnStatusChange(task, oldStatus, newStatus) {
+  // TODO: Replace with your actual n8n Production Webhook URL
+  const webhookUrl = "https://DEINE-N8N-URL/webhook/join-status-update";
+  
+  fetch(webhookUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      creatorEmail: task.createdBy, // In dummy script, this stores the email if it came from the webhook
+      creatorName: "Externer Benutzer",
+      title: task.title,
+      oldStatus: oldStatus,
+      newStatus: newStatus
+    })
+  }).catch(err => console.error("Failed to notify external creator:", err));
 }
 
 /**
