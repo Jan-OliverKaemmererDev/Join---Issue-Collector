@@ -47,7 +47,7 @@
     to {
       background-color: transparent;
       pointer-events: none;
-      z-index: 50;
+      z-index: 1002;
     }
   }
 
@@ -366,6 +366,45 @@
   .login-footer a:hover {
     opacity: 1;
     text-decoration: underline;
+  }
+
+  /* Anpassungen für das Welcome Overlay auf Mobile */
+  .welcome-overlay:not(.hidden) ~ .login-header {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    justify-content: flex-end;
+    padding: 37px 16px;
+    z-index: 1002;
+    background: transparent;
+  }
+
+  .welcome-overlay:not(.hidden) ~ .login-header .header-right span {
+    color: var(--white, #ffffff);
+  }
+
+  .welcome-overlay:not(.hidden) ~ .login-header .btn-signup {
+    background-color: transparent;
+    color: var(--white, #ffffff);
+    padding: 0;
+    margin-left: 10px;
+    border: none;
+  }
+
+  .welcome-overlay:not(.hidden) ~ .login-footer {
+    z-index: 1002;
+  }
+
+  .welcome-overlay:not(.hidden) ~ .login-footer a {
+    color: var(--white, #ffffff);
+  }
+
+  .welcome-overlay .welcome-card .btn-stakeholder,
+  .welcome-overlay .welcome-card .btn-member {
+    width: auto;
+    padding: 12px 32px;
   }
 }
 

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./styles/standard.css" />
     <link rel="stylesheet" href="./styles/style.css" />
     <link rel="stylesheet" href="./styles/stakeholder.css" />
+    <link rel="stylesheet" href="./styles/mobile/stakeholder-mobile.css" />
     <title>Join - Stakeholder</title>
   </head>
   <body onload="initStakeholder()">
@@ -14,20 +15,30 @@
       <a href="index.html" class="logo-link">
         <img src="./assets/login-screen/join-logo.png" alt="Join Logo" class="header-logo" />
       </a>
-      <div class="header-right">
-        <span id="request-counter" class="counter-normal">Loading requests...</span>
+      <div class="header-right hide-mobile">
+        <span class="request-counter counter-normal">Loading requests...</span>
       </div>
     </header>
 
     <main class="stakeholder-main">
-      <div class="back-link-container">
+      <div class="back-link-container hide-mobile">
         <a href="index.html" class="back-link">
           <img src="./assets/icons/issue-collector/back.svg" alt="Back" />
         </a>
       </div>
 
       <div class="content-wrapper">
-        <h1 class="welcome-heading">Welcome</h1>
+        <div class="mobile-welcome-row show-mobile">
+          <h1 class="welcome-heading">Welcome</h1>
+          <a href="index.html" class="back-link">
+            <img src="./assets/icons/issue-collector/back-light-blue.svg" alt="Back" />
+          </a>
+        </div>
+        <div class="mobile-counter-row show-mobile">
+          <span class="request-counter counter-normal">Loading requests...</span>
+        </div>
+
+        <h1 class="welcome-heading hide-mobile">Welcome</h1>
 
         <div class="stakeholder-content">
           <div class="left-col" id="state-normal">
@@ -35,7 +46,7 @@
             <p>On this platform, you can submit your feature requests via email. Our AI system will automatically generate a ticket with a deadline and priority level.</p>
             <p>A total of 10 requests can be created per day. After this limit, emails can still be sent, but they will be manually reviewed by our team instead of generating AI tickets.</p>
             <button class="btn-stakeholder-action" onclick="createEmailRequest()">
-              Create Email Request <img src="./assets/icons/check-create-icon.svg" alt="Check">
+              <span>Create <span class="hide-mobile">Email </span>Request</span> <img src="./assets/icons/check-create-icon.svg" alt="Check">
             </button>
           </div>
 
@@ -43,7 +54,7 @@
             <div class="limit-warning">The daily 10-request limit has been reached!</div>
             <p>Need more? No worries — you can still send emails, but our team will review them manually instead of using AI to create tickets.</p>
             <button class="btn-stakeholder-action" onclick="createEmailRequest()">
-              Send an email <img src="./assets/icons/check-create-icon.svg" alt="Check">
+              <span>Send an email</span> <img src="./assets/icons/check-create-icon.svg" alt="Check">
             </button>
           </div>
 

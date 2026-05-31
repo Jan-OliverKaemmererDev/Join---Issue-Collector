@@ -119,7 +119,7 @@
 }
 
 .btn-stakeholder-action {
-  background-color: var(--light-blue);
+  background-color: var(--dark-blue);
   color: white;
   padding: 12px 24px;
   border-radius: 8px;
@@ -134,7 +134,7 @@
 }
 
 .btn-stakeholder-action:hover {
-  filter: brightness(1.1);
+  background-color: var(--light-blue);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
@@ -155,12 +155,12 @@
     flex-direction: column;
     align-items: center;
   }
-  
+
   .back-link-container {
     position: static;
     margin-bottom: 20px;
   }
-  
+
   .stakeholder-header {
     padding: 20px 40px;
   }

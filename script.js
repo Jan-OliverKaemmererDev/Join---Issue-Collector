@@ -2,7 +2,13 @@
  * Initialisiert die Login-Seite
  */
 function initLogin() {
-  // Can be left empty or removed.
+  const overlay = document.getElementById("welcome-overlay");
+  const logo = document.getElementById("flying-logo");
+  if (overlay && !overlay.classList.contains("hidden") && logo) {
+    if (window.innerWidth <= 780) {
+      logo.src = "./assets/main-page/join-logo-white.svg";
+    }
+  }
 }
 
 /**
@@ -12,6 +18,10 @@ function closeWelcomeOverlay() {
   const overlay = document.getElementById("welcome-overlay");
   if (overlay) {
     overlay.classList.add("hidden");
+    const logo = document.getElementById("flying-logo");
+    if (logo) {
+      logo.src = "./assets/login-screen/join-logo.png";
+    }
   }
 }
 
