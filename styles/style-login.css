@@ -61,7 +61,7 @@
   align-items: center;
   opacity: 0;
   pointer-events: none;
-  animation: fadeIn 0.8s ease-in-out 1.4s forwards;
+  animation: fadeIn 0.8s ease-in-out 0.5s forwards;
 }
 
 .welcome-overlay.hidden {

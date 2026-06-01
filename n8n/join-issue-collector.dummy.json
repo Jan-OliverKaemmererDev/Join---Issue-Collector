@@ -105,7 +105,7 @@
         368
       ],
       "id": "430203f0-5ebf-42ff-a0c0-cb137fd78052",
-      "name": "Limit < 10?"
+      "name": "Check Daily Ticket Limit < 10"
     },
     {
       "parameters": {
@@ -120,7 +120,7 @@
         256
       ],
       "id": "c12b7e66-c87c-499d-80fc-f249cc95162d",
-      "name": "Basic LLM Chain"
+      "name": "Analyze Email & Extract JSON (AI)"
     },
     {
       "parameters": {
@@ -249,7 +249,7 @@
         256
       ],
       "id": "7aaa5cd4-bddf-48cf-aa1f-6d89ebac02f4",
-      "name": "Firebase: Counter +1"
+      "name": "Firebase: Increment Daily Ticket Count"
     },
     {
       "parameters": {
@@ -328,18 +328,18 @@
       "main": [
         [
           {
-            "node": "Limit < 10?",
+            "node": "Check Daily Ticket Limit < 10",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Limit < 10?": {
+    "Check Daily Ticket Limit < 10": {
       "main": [
         [
           {
-            "node": "Basic LLM Chain",
+            "node": "Analyze Email & Extract JSON (AI)",
             "type": "main",
             "index": 0
           }
@@ -353,7 +353,7 @@
         ]
       ]
     },
-    "Basic LLM Chain": {
+    "Analyze Email & Extract JSON (AI)": {
       "main": [
         [
           {
@@ -368,7 +368,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "Basic LLM Chain",
+            "node": "Analyze Email & Extract JSON (AI)",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -390,14 +390,14 @@
       "main": [
         [
           {
-            "node": "Firebase: Counter +1",
+            "node": "Firebase: Increment Daily Ticket Count",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Firebase: Counter +1": {
+    "Firebase: Increment Daily Ticket Count": {
       "main": [
         [
           {

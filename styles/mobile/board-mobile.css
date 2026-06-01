@@ -1,5 +1,5 @@
-/* --- Grundlegendes Layout für Mobile (320px bis 780px) --- */
-@media (min-width: 320px) and (max-width: 780px) {
+/* --- Grundlegendes Layout für Mobile (bis 1200px) --- */
+@media (max-width: 1200px) {
   html,
   body {
     height: auto !important;
@@ -81,11 +81,13 @@
 
   /* 3. Main Content anpassen */
   .main-content {
-    margin-left: 0;
+    margin-left: 0 !important;
+    width: 100% !important;
     padding-top: 72px;
     padding-bottom: 100px;
     height: auto;
     display: block;
+    box-sizing: border-box;
   }
 
   /* Board Container */
@@ -480,7 +482,7 @@
   display: none;
 }
 
-@media (min-width: 320px) and (max-width: 780px) {
+@media (max-width: 1200px) {
   .mobile-edit-overlay {
     display: none;
     position: fixed;

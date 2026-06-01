@@ -262,7 +262,50 @@
   margin-top: 5px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1300px) {
+  .summary-section {
+    padding: 40px 40px; /* Mehr Platz für den Hauptbereich */
+  }
+
+  .summary-container {
+    gap: 30px; /* Reduzierter Abstand zwischen Grid und Grußwort */
+  }
+
+  .card-large {
+    gap: 15px;
+    padding: 15px;
+  }
+  
+  .deadline-info {
+    padding-left: 15px;
+  }
+  
+  .urgent-info {
+    gap: 10px;
+  }
+
+  .urgent-info .icon-badge {
+    width: 50px;
+    height: 50px;
+  }
+
+  .urgent-info .icon-badge img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .urgent-info b {
+    font-size: 32px;
+  }
+  
+  .urgent-info p, .deadline-info b, .deadline-info p {
+    font-size: 15px;
+  }
+}
+
+/* Wir brechen das Layout etwas früher um (1180px statt 1000px),
+   damit die Elemente niemals zu sehr gequetscht werden. */
+@media (max-width: 1180px) {
   .summary-container {
     flex-direction: column-reverse;
     align-items: flex-start;
@@ -272,3 +315,4 @@
     margin-bottom: 40px;
   }
 }
+
