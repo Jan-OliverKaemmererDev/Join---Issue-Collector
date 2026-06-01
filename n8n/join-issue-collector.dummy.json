@@ -3,6 +3,47 @@
   "nodes": [
     {
       "parameters": {
+        "httpMethod": "POST",
+        "path": "join-status-update",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        -656,
+        688
+      ],
+      "id": "61808aae-7cb5-4140-a430-e5a96901d380",
+      "name": "Webhook (Status Update)",
+      "webhookId": "YOUR_WEBHOOK_ID"
+    },
+    {
+      "parameters": {
+        "fromEmail": "deine-email@beispiel.de",
+        "toEmail": "={{ $json.body.creatorEmail }}",
+        "subject": "={{ 'Status-Update für dein Ticket: ' + $json.body.title }}",
+        "text": "={{ 'Hallo ' + $json.body.creatorName + ',\\n\\nder Status deines Tickets \"' + $json.body.title + '\" hat sich geändert.\\n\\nNeuer Status: ' + $json.body.newStatus + '\\n\\nViele Grüße,\\nDein Join-Team' }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        688
+      ],
+      "id": "fd0f5376-ee1d-4759-937a-cf018d2a01ac",
+      "name": "Send Status Email",
+      "webhookId": "YOUR_WEBHOOK_ID",
+      "credentials": {
+        "smtp": {
+          "id": "YOUR_SMTP_CREDENTIAL_ID",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
         "format": "resolved",
         "options": {
           "trackLastMessageId": true
@@ -11,10 +52,10 @@
       "type": "n8n-nodes-base.emailReadImap",
       "typeVersion": 2.1,
       "position": [
-        -624,
-        32
+        -656,
+        368
       ],
-      "id": "4c43b365-2759-45f8-afb7-4b728282d944",
+      "id": "4ab175e6-2483-4724-a92f-754cdb3c611b",
       "name": "Email Trigger (IMAP)",
       "credentials": {
         "imap": {
@@ -40,10 +81,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [
-        -400,
-        32
+        -432,
+        368
       ],
-      "id": "01f97224-464b-4c5e-bb1a-311f0acdfa84",
+      "id": "26eaed6a-5d39-4672-b139-11c4ae204951",
       "name": "Firebase: Check Limit"
     },
     {
@@ -60,25 +101,25 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [
-        -176,
-        32
+        -208,
+        368
       ],
-      "id": "7193bed6-4d7b-4f0c-bd56-aa887818d498",
+      "id": "430203f0-5ebf-42ff-a0c0-cb137fd78052",
       "name": "Limit < 10?"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Du bist ein technischer Projektmanager für das Kanban-Board \"Join\". Analysiere den E-Mail-Text und extrahiere die Daten in JSON.\n\nWICHTIG: Prüfe zuerst, ob das Anliegen relevant für das Projekt \"Join\" oder ein IT-spezifisches To-Do ist. Ignoriere Spam, Blödsinn oder völlig irrelevante Themen.\n\nE-Mail Betreff: {{ $('Email Trigger (IMAP)').item.json.subject }}\nE-Mail Text: {{ $('Email Trigger (IMAP)').item.json.text }}\n\nGib exakt dieses JSON-Format zurück:\n{\n  \"isRelevant\": \"true oder false (false bei Spam, Blödsinn oder irrelevanten Themen)\",\n  \"title\": \"Prägnanter Titel\",\n  \"category\": \"technischer Task, User Story/Feature, oder Bug Request\",\n  \"priority\": \"urgent, medium, oder low\",\n  \"deadline\": \"Deadline falls vorhanden, sonst null\",\n  \"description\": \"Fasse das Anliegen zusammen. Füge am Ende hinzu: 'Dieses Ticket wurde KI-generiert'\"\n}\n\nGib NUR das JSON aus.",
+        "text": "=Du bist ein technischer Projektmanager für das Kanban-Board \"Join\". Analysiere den E-Mail-Text und extrahiere die Daten in JSON.\n\nWICHTIG: Prüfe zuerst, ob das Anliegen relevant für das Projekt \"Join\" oder ein IT-spezifisches To-Do ist. Ignoriere Spam, Blödsinn oder völlig irrelevante Themen.\n\nE-Mail Betreff: {{ $('Email Trigger (IMAP)').item.json.subject }}\nE-Mail Text: {{ $('Email Trigger (IMAP)').item.json.text }}\n\nGib exakt dieses JSON-Format zurück:\n{\n  \"isRelevant\": \"true oder false (false bei Spam, Blödsinn oder irrelevanten Themen)\",\n  \"title\": \"Prägnanter Titel\",\n  \"category\": \"technischer Task, User Story/Feature, oder Bug Request\",\n  \"priority\": \"urgent, medium, oder low\",\n  \"deadline\": \"Deadline falls vorhanden, sonst null\",\n  \"description\": \"Fasse das Anliegen zusammen. Füge am Ende hinzu: 'Dieses Ticket wurde KI-generiert'\",\n  \"creatorName\": \"Name des Erstellers, falls aus der E-Mail (z. B. Signatur oder Name des Senders) ableitbar, sonst null\"\n}\n\nGib NUR das JSON aus.",
         "hasOutputParser": true
       },
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.4,
       "position": [
-        80,
-        -80
+        48,
+        256
       ],
-      "id": "7786ef37-ea6f-4b8b-9e6b-b89086f9c371",
+      "id": "c12b7e66-c87c-499d-80fc-f249cc95162d",
       "name": "Basic LLM Chain"
     },
     {
@@ -89,10 +130,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        80,
-        64
+        48,
+        400
       ],
-      "id": "4c2c03eb-5924-42da-88ad-3ad1d93bac2d",
+      "id": "fa3c4ed7-1c46-41ee-9c16-fed7fdfb465d",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -103,15 +144,15 @@
     },
     {
       "parameters": {
-        "jsCode": "let rawText = $input.all()[0].json.text;\nlet cleanText = rawText.replace(/```json/gi, '').replace(/```/gi, '').trim();\nconst aiOutput = JSON.parse(cleanText);\n\nif (aiOutput.isRelevant === false || aiOutput.isRelevant === \"false\") {\n  return [];\n}\n\nconst emailSender = $('Email Trigger (IMAP)').first().json.from.address;\n\nreturn {\n  title: aiOutput.title,\n  category: aiOutput.category,\n  priority: aiOutput.priority,\n  deadline: aiOutput.deadline,\n  description: aiOutput.description,\n  creator: emailSender,\n  creatorType: \"extern\",\n  status: \"triage\"\n};"
+        "jsCode": "let rawText = $input.all()[0].json.text;\nlet cleanText = rawText.replace(/```json/gi, '').replace(/```/gi, '').trim();\nconst aiOutput = JSON.parse(cleanText);\n\nif (aiOutput.isRelevant === false || aiOutput.isRelevant === \"false\") {\n  return [];\n}\n\nconst emailSender = $('Email Trigger (IMAP)').first().json.from.address;\nlet emailReceiver = \"deine-email@beispiel.de\";\ntry { emailReceiver = $('Email Trigger (IMAP)').first().json.to.value[0].address; } catch(e) {}\n\nreturn {\n  title: aiOutput.title,\n  category: aiOutput.category,\n  priority: aiOutput.priority,\n  deadline: aiOutput.deadline,\n  description: aiOutput.description,\n  creator: emailSender,\n  creatorName: aiOutput.creatorName || \"Externer Benutzer\",\n  receiver: emailReceiver,\n  creatorType: \"extern\",\n  status: \"triage\"\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        384,
-        -80
+        352,
+        256
       ],
-      "id": "d5a10b8c-e44b-4782-a75d-29cb355ab3ed",
+      "id": "91b3463a-4e02-4ace-9898-58a3a890e725",
       "name": "Format Ticket Data"
     },
     {
@@ -155,12 +196,20 @@
               "value": "={{ $json.creator }}"
             },
             {
+              "name": "creatorName",
+              "value": "={{ $json.creatorName }}"
+            },
+            {
               "name": "creatorType",
               "value": "={{ $json.creatorType }}"
             },
             {
               "name": "status",
               "value": "={{ $json.status }}"
+            },
+            {
+              "name": "receiver",
+              "value": "={{ $json.receiver }}"
             }
           ]
         },
@@ -169,10 +218,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [
-        608,
-        -80
+        576,
+        256
       ],
-      "id": "f39be3c6-ce84-47fd-87da-9f8daec0088a",
+      "id": "065f5f77-78e1-43e6-bc0f-974d492499f5",
       "name": "Firebase: Save Ticket"
     },
     {
@@ -196,10 +245,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [
-        832,
-        -80
+        800,
+        256
       ],
-      "id": "07308e05-8389-4608-aaac-b40543d2affd",
+      "id": "7aaa5cd4-bddf-48cf-aa1f-6d89ebac02f4",
       "name": "Firebase: Counter +1"
     },
     {
@@ -213,22 +262,23 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2,
       "position": [
-        96,
-        240
+        64,
+        576
       ],
-      "id": "ddac1839-3a44-46ce-a1fc-e0b8dafcf3af",
+      "id": "3e0e5a86-ba5e-45ec-9e6b-bd0c83cf40a2",
       "name": "Limit Reached (Send Email)",
+      "webhookId": "YOUR_WEBHOOK_ID",
       "credentials": {
         "smtp": {
-          "id": "",
+          "id": "YOUR_SMTP_CREDENTIAL_ID",
           "name": "SMTP account"
         }
       }
     },
     {
       "parameters": {
-        "fromEmail": "jowieja22@gmail.com",
-        "toEmail": "={{ $('Format Ticket Data').first().json.creator || 'jowieja22@gmail.com' }}",
+        "fromEmail": "deine-email@beispiel.de",
+        "toEmail": "={{ $('Format Ticket Data').first().json.creator || 'deine-email@beispiel.de' }}",
         "subject": "={{ 'Ticket erfolgreich erstellt: ' + ($('Format Ticket Data').first().json.title || 'Unbekannt') }}",
         "text": "={{ 'Hallo,\\n\\ndein Anliegen wurde erfolgreich als Ticket in unserem Join Kanban-Board angelegt.\\n\\nTitel: ' + ($('Format Ticket Data').first().json.title || 'Unbekannt') + '\\nKategorie: ' + ($('Format Ticket Data').first().json.category || 'Unbekannt') + '\\n\\nViele Grüße,\\nDein Join-Team' }}",
         "options": {}
@@ -236,14 +286,15 @@
       "type": "n8n-nodes-base.emailSend",
       "typeVersion": 2,
       "position": [
-        1056,
-        -80
+        1024,
+        256
       ],
-      "id": "ticket-created-email-node-123",
+      "id": "48a3fb79-61b2-46e6-b532-7bb37689dea1",
       "name": "Ticket Created (Send Email)",
+      "webhookId": "YOUR_WEBHOOK_ID",
       "credentials": {
         "smtp": {
-          "id": "",
+          "id": "YOUR_SMTP_CREDENTIAL_ID",
           "name": "SMTP account"
         }
       }
@@ -251,6 +302,17 @@
   ],
   "pinData": {},
   "connections": {
+    "Webhook (Status Update)": {
+      "main": [
+        [
+          {
+            "node": "Send Status Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Email Trigger (IMAP)": {
       "main": [
         [
@@ -352,7 +414,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "8c5bdbdb-66b0-406e-8230-e85128e500fc",
+  "versionId": "e7e76d37-64fd-4af9-aee1-e7f4e56e34cd",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "YOUR_INSTANCE_ID"
