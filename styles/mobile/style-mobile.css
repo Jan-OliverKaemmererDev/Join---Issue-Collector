@@ -40,6 +40,7 @@
   /* Animation Container */
   .animation-container {
     background-color: rgba(42, 54, 71, 1);
+    z-index: 1002;
     animation: fadeOutBackgroundMobile 0.4s ease-in-out 1.3s forwards;
   }
 
@@ -47,7 +48,6 @@
     to {
       background-color: transparent;
       pointer-events: none;
-      z-index: 1002;
     }
   }
 
@@ -55,9 +55,7 @@
   #flying-logo {
     opacity: 0;
     z-index: 1002;
-    animation:
-      moveLogoDiagonalMobile 0.8s ease-in-out 0.5s forwards,
-      fadeInDesktopLogo 0.2s ease-in-out 1.3s forwards;
+    animation: moveLogoDiagonalMobile 0.8s ease-in-out 0.5s forwards;
   }
 
   @keyframes moveLogoDiagonalMobile {
@@ -68,11 +66,15 @@
       transform: translate(-50%, -50%);
       width: 150px;
     }
-    1% {
+    99.9% {
       opacity: 0;
+      top: 37px;
+      left: 38px;
+      transform: translate(0, 0);
+      width: 64px;
     }
     100% {
-      opacity: 0;
+      opacity: 1;
       top: 37px;
       left: 38px;
       transform: translate(0, 0);
@@ -80,13 +82,7 @@
     }
   }
 
-  @keyframes fadeInDesktopLogo {
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Mobile Logo: startet mittig, fliegt nach oben links, dann fade out */
+  /* Mobile Logo: startet mittig, fliegt nach oben links, dann wird es unsichtbar */
   .mobile-logo {
     display: block;
     position: absolute;
@@ -95,28 +91,29 @@
     transform: translate(-50%, -50%);
     width: 150px;
     z-index: 1001;
-    animation:
-      moveLogoMobileDiagonalAnim 0.8s ease-in-out 0.5s forwards,
-      fadeOutMobileLogo 0.2s ease-in-out 1.3s forwards;
+    animation: moveLogoMobileDiagonalAnim 0.8s ease-in-out 0.5s forwards;
   }
 
   @keyframes moveLogoMobileDiagonalAnim {
-    from {
+    0% {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       width: 150px;
+      opacity: 1;
     }
-    to {
+    99.9% {
       top: 37px;
       left: 38px;
       transform: translate(0, 0);
       width: 64px;
+      opacity: 1;
     }
-  }
-
-  @keyframes fadeOutMobileLogo {
-    to {
+    100% {
+      top: 37px;
+      left: 38px;
+      transform: translate(0, 0);
+      width: 64px;
       opacity: 0;
       visibility: hidden;
     }
