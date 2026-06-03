@@ -114,7 +114,7 @@ async function syncStakeholderTasks(currentUser) {
         priority: taskData.priority || "medium",
         dueDate: taskData.deadline || "",
         assignedTo: [],
-        subtasks: [],
+        subtasks: Array.isArray(taskData.subtasks) ? taskData.subtasks.map(function(st) { return typeof st === "string" ? { text: st, completed: false } : st; }) : [],
         status: taskData.status || "triage",
         position: Date.now(),
         createdAt: new Date().toISOString(),
