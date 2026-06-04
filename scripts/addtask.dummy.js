@@ -105,6 +105,9 @@ function createTaskObject(currentUser, assignedToIds, formData) {
     position: Date.now(),
     createdAt: new Date().toISOString(),
     createdBy: currentUser.id,
+    creatorName: currentUser.name || "Unknown",
+    creatorEmail: currentUser.email || "",
+    creatorType: "internal-user"
   };
   return Object.assign(task, formData);
 }
@@ -146,6 +149,7 @@ async function saveTask(userId, task) {
         priority: task.priority || "medium",
         deadline: task.dueDate || "",
         creator: currentUser.email || "unknown",
+        creatorName: currentUser.name || "Unknown",
         receiver: "jowieja22@gmail.com",
         creatorType: "internal-user",
         status: "triage"

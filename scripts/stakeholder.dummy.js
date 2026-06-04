@@ -86,12 +86,14 @@ function updateCountFromRoot(data) {
  * @param {number} count - The number of requests used today.
  */
 function updateStakeholderUI(count) {
-  const counterSpan = document.getElementById("request-counter");
-  if (count >= DAILY_LIMIT) {
-    setLimitReachedUI(counterSpan);
-  } else {
-    setNormalUI(count, counterSpan);
-  }
+  const counterSpans = document.querySelectorAll(".request-counter");
+  counterSpans.forEach(span => {
+    if (count >= DAILY_LIMIT) {
+      setLimitReachedUI(span);
+    } else {
+      setNormalUI(count, span);
+    }
+  });
 }
 
 /**
@@ -100,7 +102,7 @@ function updateStakeholderUI(count) {
  */
 function setLimitReachedUI(counterSpan) {
   counterSpan.textContent = `${DAILY_LIMIT} of ${DAILY_LIMIT} requests used today`;
-  counterSpan.className = "counter-limit";
+  counterSpan.className = "request-counter counter-limit";
   toggleStateVisibility("state-limit", "state-normal");
   setStakeholderImage("stakeholder-limit-reached.png");
 }
@@ -112,7 +114,7 @@ function setLimitReachedUI(counterSpan) {
  */
 function setNormalUI(count, counterSpan) {
   counterSpan.textContent = `${count} of ${DAILY_LIMIT} requests used today`;
-  counterSpan.className = "counter-normal";
+  counterSpan.className = "request-counter counter-normal";
   toggleStateVisibility("state-normal", "state-limit");
   setStakeholderImage("stakeholder.png");
 }
@@ -139,36 +141,18 @@ function setStakeholderImage(imageName) {
 /**
  * Handles the button click for creating an email request.
  */
-async function createEmailRequest() {
-  if (currentCount >= DAILY_LIMIT) return;
-  const newCount = currentCount + 1;
-  updateStakeholderUI(newCount);
-  await patchFirebaseCount(newCount);
+function createEmailRequest() {
   openEmailClient();
-}
-
-/**
- * Sends a PATCH request to Firebase to update the count.
- * @param {number} newCount - The new request count to save.
- */
-async function patchFirebaseCount(newCount) {
-  try {
-    await fetch(getFirebaseUrl(), {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ count: newCount })
-    });
-  } catch (e) {
-    console.error("Error updating limit in Firebase:", e);
-  }
 }
 
 /**
  * Opens the user's default email client with a pre-filled subject.
  */
 function openEmailClient() {
+  const bodyText = "Your name: \nTitle: \nDescription (optional): \nPriority (urgent, medium, low): \nDue date: \nsubtasks: ";
+  const encodedBody = encodeURIComponent(bodyText);
   const link = document.createElement("a");
-  link.href = "mailto:jowieja22@gmail.com?subject=New%20Join%20Request";
+  link.href = `mailto:jowieja22@gmail.com?subject=New%20Join%20Request&body=${encodedBody}`;
   link.target = "_blank";
   document.body.appendChild(link);
   link.click();

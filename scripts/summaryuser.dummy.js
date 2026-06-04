@@ -136,7 +136,7 @@ async function syncExternalTasksToFirestore(user) {
         priority: taskData.priority || "medium",
         dueDate: taskData.deadline || "",
         assignedTo: [],
-        subtasks: [],
+        subtasks: parseSubtasks(taskData.subtasks),
         status: taskData.status || "triage",
         position: Date.now(),
         createdAt: new Date().toISOString(),
@@ -161,6 +161,45 @@ async function syncExternalTasksToFirestore(user) {
     return false;
   }
 }
+
+/**
+ * Normalisiert Subtasks aus verschiedenen Firebase-Formaten in das Board-Format
+ * @param {*} raw - Die rohen Subtask-Daten aus Firebase
+ * @returns {Array} Array von {text, completed} Objekten
+ */
+function parseSubtasks(raw) {
+  if (!raw) return [];
+  var items = [];
+  if (Array.isArray(raw)) {
+    items = raw;
+  } else if (typeof raw === "string") {
+    try {
+      var parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        items = parsed;
+      } else {
+        items = raw.split(",").map(function(s) { return s.trim(); }).filter(Boolean);
+      }
+    } catch (e) {
+      items = raw.split(",").map(function(s) { return s.trim(); }).filter(Boolean);
+    }
+  } else if (typeof raw === "object") {
+    var keys = Object.keys(raw);
+    for (var i = 0; i < keys.length; i++) {
+      items.push(raw[keys[i]]);
+    }
+  }
+  return items.map(function(st) {
+    if (typeof st === "string") {
+      return { id: Date.now() + Math.floor(Math.random() * 1000), text: st, completed: false };
+    }
+    if (st && typeof st === "object" && st.text) {
+      return { id: st.id || (Date.now() + Math.floor(Math.random() * 1000)), text: st.text, completed: !!st.completed };
+    }
+    return null;
+  }).filter(Boolean);
+}
+
 
 /**
  * Ensures the creator of the external task is added to contacts.
